@@ -130,7 +130,7 @@ deriveFromDhall it {options} n =
           debug = show $ constructor'
           debug2 = show $ map fst xs
           lhs0 = `(~(var funName) (EField _ (EUnion _ xs) (MkFieldName ~cn)))
-          lhs1 = `(~(var funName) (EApp fc (EField _ (EUnion _ xs) (MkFieldName ~cn)) ~(bindvar $ show arg)))
+          lhs1 = `(~(var funName) (EApp fc (EField _ (EUnion _ xs) (MkFieldName ~cn)) ~(bindvar arg)))
           -- TODO lhsN for data constructors with more than 0 or 1 args
           in do
           case xs of
@@ -146,5 +146,5 @@ deriveFromDhall it {options} n =
       -- given constructors, lookup names in dhall records for those constructors
       clausesRecord <- traverse (\(cn, as) => genClauseRecord cn arg (reverse as)) cons
       -- create clause from dhall to `Maybe a` using the above clauses as the rhs
-      pure $ pure $ patClause `(~(var funName) (ERecordLit fc ~(bindvar $ show arg)))
+      pure $ pure $ patClause `(~(var funName) (ERecordLit fc ~(bindvar arg)))
                               (foldl (\acc, x => `(~x)) `(Left $ FromDhallError ~(varStr "fc") "failed1") (clausesRecord)) -- not a real foldl, basically just passes that clausesRecord though, also doesn't support a record with no args

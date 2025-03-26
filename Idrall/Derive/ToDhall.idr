@@ -92,9 +92,9 @@ parameters (options : Options)
 
   genRecordLitClauses : Name -> Name -> Cons -> List Clause
   genRecordLitClauses funName arg [] = do
-    pure $ patClause `(~(var funName) ~(bindvar $ show arg)) (dhallRecLitFromRecArg arg [])
+    pure $ patClause `(~(var funName) ~(bindvar arg)) (dhallRecLitFromRecArg arg [])
   genRecordLitClauses funName arg ((n, ls) :: xs) = do
-    pure $ patClause `(~(var funName) ~(bindvar $ show arg)) (dhallRecLitFromRecArg arg ls)
+    pure $ patClause `(~(var funName) ~(bindvar arg)) (dhallRecLitFromRecArg arg ls)
 
   deriveToDhallRecord :  Name
                       -> Name
@@ -145,7 +145,7 @@ genClauseADT name funName constructor' xs =
          ((n, t) :: []) => do
             argName <- genReadableSym "arg"
             pure $ MkPair
-              `(~(var funName) (~(varStr cnShort) ~(bindvar $ show argName)))
+              `(~(var funName) (~(varStr cnShort) ~(bindvar argName)))
               `(EApp EmptyFC (EField EmptyFC (~(varStr toDhallTypeFunName)) (MkFieldName ~fieldName)) (toDhall ~(var argName)))
          (x :: _) => fail $ "too many args for constructor: " ++ show constructor'
 
