@@ -74,7 +74,7 @@ primStr = IPrimVal EmptyFC . Str
 
 ||| from idris2-lsp
 export
-bindvar : String -> TTImp
+bindvar : Name -> TTImp
 bindvar = IBindVar EmptyFC
 
 ||| from idris2-lsp
